@@ -216,7 +216,7 @@ html.mapa-aberto, html.mapa-aberto body { overflow: hidden; }
 <body>
 <main class="pagina">
   <header class="topo">
-    <span class="rotulo">Alegria · trator 1BM5080ELS4204018 · atualizado 06/11 08:12</span>
+    <span class="rotulo">Alegria · trator 1BM5080ELS4204018 · atualizado 06/11 08:56</span>
     <div class="topo-linha"><h1>Gradagem do T06</h1><span class="selo falha">Em andamento · conferir falhas</span></div>
     <div class="progresso">
       <div class="progresso-numeros"><span class="pct">49%</span>
@@ -241,10 +241,10 @@ html.mapa-aberto, html.mapa-aberto body { overflow: hidden; }
   <button type="button" id="replay-play" aria-label="Reproduzir o percurso">▶</button>
   <select id="replay-velocidade" aria-label="Velocidade da reprodução"
           title="Quanto tempo do trator passa a cada segundo da reprodução">
-    <option value="30">30 s por segundo</option>
-    <option value="60" selected>1 min por segundo</option>
-    <option value="300">5 min por segundo</option>
-    <option value="1200">20 min por segundo</option>
+    <option value="120">2 min por segundo</option>
+    <option value="300" selected>5 min por segundo</option>
+    <option value="600">10 min por segundo</option>
+    <option value="1800">30 min por segundo</option>
   </select>
   <input type="range" id="replay-hora" min="0" max="1047" value="1047" step="1"
          aria-label="Hora do percurso">
@@ -457,7 +457,7 @@ html.mapa-aberto, html.mapa-aberto body { overflow: hidden; }
     const dicaSetas = () => { if (dica) dica.hidden = map.getZoom() >= ZOOM_SETAS; };
     map.on('zoom', dicaSetas);
 
-    // reprodução: o trator anda entre os pontos; o rastro é redesenhado no máximo a cada 0,1 s
+    // reprodução: o trator anda entre os pontos; o rastro é redesenhado no máximo a cada 0,05 s
     let ultimo = {i: -1, quando: 0};
     function desenhar(i, frac) {
       let pos = [P[i][0], P[i][1]], ang = rumo(i), parcial = null;
@@ -470,7 +470,7 @@ html.mapa-aberto, html.mapa-aberto body { overflow: hidden; }
       }
       trator.setLngLat(pos).setRotation(ang);
       const agora = performance.now(), fonteRastro = map.getSource('rastro');
-      if (fonteRastro && (i !== ultimo.i || !parcial || agora - ultimo.quando > 100)) {
+      if (fonteRastro && (i !== ultimo.i || !parcial || agora - ultimo.quando > 50)) {
         ultimo = {i, quando: agora};
         const fc = linhas(i);
         if (parcial) fc.features.push(parcial);
